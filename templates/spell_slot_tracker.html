@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitale D&D Spell Slot Tracker</title>
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/spell_slot_tracker.css">
+</head>
+<body>
+    <header>Digitale D&D Spell Slot Tracker</header>
+
+    <form action="/spell_slot_tracker" method="post">
+        <label for="class">Kies je class.</label>
+        <select name="class" id="class" required>
+            <option value="bard">Bard</option>
+            <option value="cleric">Cleric</option>
+            <option value="druid">Druid</option>
+            <option value="paladin">Paladin</option>
+            <option value="ranger">Ranger</option>
+            <option value="sorcerer">Sorcerer</option>
+            <option value="warlock">Warlock</option>
+            <option value="wizard">Wizard</option>
+        </select>
+
+        <label for="level">Kies je level</label>
+        <input type="number" name="level" id="level" value="1" min="1" max="20" required>
+
+
+        <button type="submit">Sla op.</button>
+    </form>    
+
+    <script src="{{ url_for('static', filename='spell_slot_tracker.js') }}"></script>
+
+</body>
+</html>
