@@ -28,12 +28,20 @@ def spell_slot_tracker():
             print("Je character is geen caster.")
             return render_template("spell_slot_tracker.html")
         
-        
+        level_1 = beschikbare_spell_slots["level_1"]
+        level_2 = beschikbare_spell_slots["level_2"]
+        level_3 = beschikbare_spell_slots["level_3"]
+        level_4 = beschikbare_spell_slots["level_4"]
+        level_5 = beschikbare_spell_slots["level_5"]
+        level_6 = beschikbare_spell_slots["level_6"]
+        level_7 = beschikbare_spell_slots["level_7"]
+        level_8 = beschikbare_spell_slots["level_8"]
+        level_9 = beschikbare_spell_slots["level_9"]
 
+        return render_template("spell_slot_tracker.html", track_spell_slots=True, level_1=level_1, level_2=level_2, level_3=level_3, level_4=level_4, \
+                               level_5=level_5, level_6=level_6, level_7=level_7, level_8=level_8, level_9=level_9)
 
-        return render_template("spell_slot_tracker.html")
-
-    return render_template("spell_slot_tracker.html")
+    return render_template("spell_slot_tracker.html", track_spell_slots=False)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
