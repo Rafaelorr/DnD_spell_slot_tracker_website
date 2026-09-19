@@ -1,5 +1,5 @@
 # full casters zijn de sorcerer, cleric, druid, bard en wizard
-full_caster_spell_slot_progression :dict[int] = {
+full_caster_spell_slot_progression :dict = {
     1: {
         "level_1": 2,
         "level_2": 0,
@@ -223,7 +223,7 @@ full_caster_spell_slot_progression :dict[int] = {
 }
 
 # Half casters zijn de ranger en paladin
-half_caster_spell_slot_progression = {
+half_caster_spell_slot_progression :dict = {
     1: {
         "level_1": 2,
         "level_2": 0,
