@@ -1,112 +1,186 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Digitale D&D Spell Slot Tracker</title>
-    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/static/spell_slot_tracker.css">
+
+    <link
+        rel="shortcut icon"
+        href="{{ url_for('static', filename='favicon.ico') }}"
+        type="image/x-icon"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='spell_slot_tracker.css') }}"
+    >
 </head>
+
+
 <body>
-    <header>Digitale D&D Spell Slot Tracker</header>
 
-    <form action="/spell_slot_tracker" method="post">
-        <label for="class">Kies je class.</label>
-        <select name="class" id="class" required>
-            <option value="bard">Bard</option>
-            <option value="cleric">Cleric</option>
-            <option value="druid">Druid</option>
-            <option value="paladin">Paladin</option>
-            <option value="ranger">Ranger</option>
-            <option value="sorcerer">Sorcerer</option>
-            <option value="warlock">Warlock</option>
-            <option value="wizard">Wizard</option>
-        </select>
-
-        <label for="level">Kies je level</label>
-        <input type="number" name="level" id="level" value="1" min="1" max="20" required>
+<header>
+    Digitale D&D Spell Slot Tracker
+</header>
 
 
-        <button type="submit">Selecteer je class en level.</button>
-    </form>
+<!-- =========================================================
+     CLASS + LEVEL
+     ========================================================= -->
+
+<form
+    action="{{ url_for('spell_slot_tracker') }}"
+    method="post"
+>
+
+    <label for="class">
+        Kies je class.
+    </label>
+
+    <select name="class" id="class" required>
+
+        <option value="bard"
+            {% if character_class == "bard" %}selected{% endif %}>
+            Bard
+        </option>
+
+        <option value="cleric"
+            {% if character_class == "cleric" %}selected{% endif %}>
+            Cleric
+        </option>
+
+        <option value="druid"
+            {% if character_class == "druid" %}selected{% endif %}>
+            Druid
+        </option>
+
+        <option value="paladin"
+            {% if character_class == "paladin" %}selected{% endif %}>
+            Paladin
+        </option>
+
+        <option value="ranger"
+            {% if character_class == "ranger" %}selected{% endif %}>
+            Ranger
+        </option>
+
+        <option value="sorcerer"
+            {% if character_class == "sorcerer" %}selected{% endif %}>
+            Sorcerer
+        </option>
+
+        <option value="warlock"
+            {% if character_class == "warlock" %}selected{% endif %}>
+            Warlock
+        </option>
+
+        <option value="wizard"
+            {% if character_class == "wizard" %}selected{% endif %}>
+            Wizard
+        </option>
+
+    </select>
+
+
+    <label for="level">
+        Kies je level
+    </label>
+
+    <input
+        type="number"
+        name="level"
+        id="level"
+        value="{{ character_level or 1 }}"
+        min="1"
+        max="20"
+        required
+    >
+
+
+    <button type="submit">
+        Selecteer je class en level.
+    </button>
+
+</form>
+
+
+<!-- =========================================================
+     SPELL SLOTS
+     ========================================================= -->
 
 {% if track_spell_slots %}
 
-    <form action="/spell_slot_tracker_save_slots" method="post">
-        {% if level_1 > 0 %}
+<form
+    action="{{ url_for('spell_slot_tracker_save_slots') }}"
+    method="post"
+>
 
-            <label for="level_1">Level 1 Spell Slots</label>
-            <input type="number" name="level_1" id="level_1" min="0" max="{{ level_1 }}" value="{{ level_1 }}" required>
+    <header>
+        Spell Slots
+    </header>
 
-        {% endif %}
 
-        {% if level_2 > 0 %}
+    {% for i in range(1, 10) %}
 
-            <label for="level_2">Level 2 Spell Slots</label>
-            <input type="number" name="level_2" id="level_2" min="0" max="{{ level_2 }}" value="{{ level_2 }}" required>
+        {% set slot_name = "level_" ~ i %}
+        {% set maximum = max_spell_slots.get(slot_name, 0) %}
+        {% set current = spell_slots.get(slot_name, 0) %}
 
-        {% endif %}
+        {% if maximum > 0 %}
 
-        {% if level_3 > 0 %}
+            <label for="{{ slot_name }}">
+                Level {{ i }} Spell Slots
+            </label>
 
-            <label for="level_3">Level 3 Spell Slots</label>
-            <input type="number" name="level_3" id="level_3" min="0" max="{{ level_3 }}" value="{{ level_3 }}" required>
-
-        {% endif %}
-
-        {% if level_4 > 0 %}
-
-            <label for="level_4">Level 4 Spell Slots</label>
-            <input type="number" name="level_4" id="level_4" min="0" max="{{ level_4 }}" value="{{ level_4 }}" required>
-
-        {% endif %}
-
-        {% if level_5 > 0 %}
-
-            <label for="level_5">Level 5 Spell Slots</label>
-            <input type="number" name="level_5" id="level_5" min="0" max="{{ level_5 }}" value="{{ level_5 }}" required>
+            <input
+                type="number"
+                name="{{ slot_name }}"
+                id="{{ slot_name }}"
+                min="0"
+                max="{{ maximum }}"
+                value="{{ current }}"
+                required
+            >
 
         {% endif %}
 
-        {% if level_6 > 0 %}
+    {% endfor %}
 
-            <label for="level_6">Level 6 Spell Slots</label>
-            <input type="number" name="level_6" id="level_6" min="0" max="{{ level_6 }}" value="{{ level_6 }}" required>
 
-        {% endif %}
+    <button type="submit">
+        Save Spell Slots
+    </button>
 
-        {% if level_7 > 0 %}
+</form>
 
-            <label for="level_7">Level 7 Spell Slots</label>
-            <input type="number" name="level_7" id="level_7" min="0" max="{{ level_7 }}" value="{{level_7}}" required>
 
-        {% endif %}
+<!-- =========================================================
+     LONG REST
+     ========================================================= -->
 
-        {% if level_8 > 0 %}
+<form
+    action="{{ url_for('spell_slot_tracker_long_rest') }}"
+    method="post"
+>
 
-            <label for="level_8">Level 8 Spell Slots</label>
-            <input type="number" name="level_8" id="level_8" min="0" max="{ {level_8 }}" value="{{ level_8 }}" required>
+    <button type="submit">
+        Long Rest (Reset)
+    </button>
 
-        {% endif %}
+</form>
 
-        {% if level_9 > 0 %}
-
-            <label for="level_9">Level 9 Spell Slots</label>
-            <input type="number" name="level_9" id="level_9" min="0" max="{{level_9}}" value="{{level_9}}" required>
-        
-        {% endif %}
-        
-        <button type="submit">Long Rest (Reset)</button>
-
-    </form>
 
 {% else %}
 
-    <p>Selecteer eerst je class en level.</p>
+    <p>
+        Selecteer eerst je class en level.
+    </p>
 
 {% endif %}
 
-    <script src="{{ url_for('static', filename='spell_slot_tracker.js') }}"></script>
-
 </body>
+
 </html>
